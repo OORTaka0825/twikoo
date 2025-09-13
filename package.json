@@ -30,7 +30,8 @@
     "deploy": "tcb fn deploy twikoo --force",
     "lint": "eslint src/** --ignore-path .eslintignore",
     "docs:dev": "cd docs && yarn docs:dev",
-    "docs:build": "cd docs && yarn docs:build"
+    "docs:build": "cd docs && yarn docs:build",
+    "postinstall": "node scripts/patch-twikoo.js || true"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -69,6 +70,10 @@
     "webpack": "^5.91.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^5.2.1"
+    "webpack-dev-server": "^5.2.1",
+    "patch-package": "^8.0.0"
+  },
+  "dependencies": {
+    "twikoo-vercel": "1.6.44"
   }
 }
