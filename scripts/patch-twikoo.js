@@ -11,12 +11,11 @@ const preferred = [
 ];
 
 function findTarget() {
-  // 1) 先按常见路径找
   for (const p of preferred) {
     const f = path.resolve(p);
     if (fs.existsSync(f)) return f;
   }
-  // 2) 兜底：在 twikoo-vercel 目录里找包含 SHOW_REGION 的 js 文件
+  // 兜底：在 twikoo-vercel 目录里找包含 SHOW_REGION 的 js 文件
   const root = path.resolve('node_modules/twikoo-vercel');
   const stack = [root];
   while (stack.length) {
@@ -87,17 +86,16 @@ async function __twk_ipToRegion__(ipRaw){
     .replace(/ip2region\s*\.\s*\w+/g, 'undefined');
 
   // —— 把 SHOW_REGION 分支里的赋值改成我们的查询 —— 
-  // 兼容压缩/不同变量名：匹配包含 SHOW_REGION 的 if 块，把其中的 comment.region 赋值替换掉
   const before = code;
   code = code.replace(
     /(if\s*\([^)]*process\.env\.SHOW_REGION[^)]*\)\s*\{[\s\S]*?)(comment\.region\s*=\s*[^;]+;)([\s\S]*?\})/m,
     (_m, p1, _old, p3) => `${p1}comment.region = await __twk_ipToRegion__(ip) || '';${p3}`
   );
-  // 若没匹配到 comment.region 再兜底：把任何 "getIpRegion" / "search(" 相关替换成我们的
   if (code === before) {
+    // 再兜底：即使没有显式的 comment.region，也强行在 SHOW_REGION 分支里写入
     code = code.replace(
-      /(if\s*\([^)]*process\.env\.SHOW_REGION[^)]*\)\s*\{[\s\S]*?)([\s\S]*?\})/m,
-      (_m, p1, p2) => `${p1}try{comment.region=await __twk_ipToRegion__(ip)||'';}catch(_){}${p2}`
+      /(if\s*\([^)]*process\.env\.SHOW_REGION[^)]*\)\s*\{)/m,
+      (_m, p1) => `${p1} try{ comment.region = await __twk_ipToRegion__(ip) || ''; }catch(e){} `
     );
   }
 
