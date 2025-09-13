@@ -2,23 +2,12 @@
   "name": "twikoo",
   "version": "1.6.44",
   "description": "A simple comment system.",
-  "keywords": [
-    "twikoojs",
-    "comment",
-    "comment-system",
-    "cloudbase",
-    "vercel"
-  ],
+  "keywords": ["twikoojs", "comment", "comment-system", "cloudbase", "vercel"],
   "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",
   "license": "MIT",
   "main": "./dist/twikoo.all.min.js",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/twikoojs/twikoo.git"
-  },
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/twikoojs/twikoo.git" },
   "homepage": "https://twikoo.js.org",
   "scripts": {
     "dev": "webpack serve --mode development",
